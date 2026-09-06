@@ -140,7 +140,7 @@ def arguments_are_valid(
     return True
 
 
-def plot_hylak_field_lin_histogram(
+def plot_hylak_field_ser_lin_histogram(
     ax:  plt.Axes, # type: ignore
     ser: pd.Series
 ) -> None:
@@ -170,7 +170,7 @@ def plot_hylak_field_lin_histogram(
     )
 
 
-def plot_hylak_field_log_histogram(
+def plot_hylak_field_ser_log_histogram(
     ax:  plt.Axes, # type: ignore
     ser: pd.Series
 ) -> None:
@@ -204,7 +204,7 @@ def plot_hylak_field_log_histogram(
     )
 
 
-def plot_hylak_field_boxplot(
+def plot_hylak_field_ser_boxplot(
     ax:  plt.Axes, # type: ignore
     ser: pd.Series
 ) -> None:
@@ -299,7 +299,7 @@ def main(
     )
 
     if args.space == "log":
-        plot_hylak_field_log_histogram(
+        plot_hylak_field_ser_log_histogram(
             hist_ax,
             hylak_field_ser
         )
@@ -312,7 +312,7 @@ def main(
             f"""Log Distribution of {args.hylak_field}"""
         )
     elif args.space == "lin":
-        plot_hylak_field_lin_histogram(
+        plot_hylak_field_ser_lin_histogram(
             hist_ax,
             hylak_field_ser
         )
@@ -327,7 +327,7 @@ def main(
     else:
         return RETURN_FAILURE
 
-    plot_hylak_field_boxplot(
+    plot_hylak_field_ser_boxplot(
         box_ax, 
         hylak_field_ser
     )
