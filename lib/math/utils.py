@@ -8,7 +8,7 @@ Written by William Chuter-Davies
 """
 
 # Related Third-party Imports
-import pandas     as pd
+import pandas as pd
 
 
 def get_ser_from_df(
@@ -31,6 +31,28 @@ def get_ser_from_df(
     A :class:`pandas.Series`.
     """
     return df[column]
+
+
+def drop_column_from_df(
+    df:     pd.DataFrame,
+    column: str
+) -> pd.DataFrame:
+    """
+    Returns `df` with `column` dropped.
+
+    Parameters
+    ----------
+    df : :class:`pandas.DataFrame`
+        The :class:`pandas.DataFrame`
+
+    column : :class:`str`
+        The column to drop
+
+    Returns
+    -------
+    A :class:`pandas.DataFrame`.
+    """
+    return df.drop(columns=[column])
 
 
 def get_quantiles_from_ser(
