@@ -75,6 +75,21 @@ def set_ax_xlim_to_gdf_total_bounds(
     ax:  plt.Axes, # type: ignore
     gdf: gpd.GeoDataFrame
 ) -> None:
+    """
+    Sets `ax`'s x-axis limits to `gdf`'s total bounds, padded by 1.
+
+    Parameters
+    ----------
+    ax : :class:`matplotlib.axes.Axes`
+        The axes to set limits on
+
+    gdf : :class:`geopandas.GeoDataFrame`
+        The :class:`geopandas.GeoDataFrame`
+
+    Returns
+    -------
+    None
+    """
     ax.set_xlim(
         gdf.total_bounds[0] - 1, # minx
         gdf.total_bounds[2] + 1  # maxx
@@ -85,6 +100,21 @@ def set_ax_ylim_to_gdf_total_bounds(
     ax:  plt.Axes, # type: ignore
     gdf: gpd.GeoDataFrame
 ) -> None:
+    """
+    Sets `ax`'s y-axis limits to `gdf`'s total bounds, padded by 1.
+
+    Parameters
+    ----------
+    ax : :class:`matplotlib.axes.Axes`
+        The axes to set limits on
+
+    gdf : :class:`geopandas.GeoDataFrame`
+        The :class:`geopandas.GeoDataFrame`
+
+    Returns
+    -------
+    None
+    """
     ax.set_ylim(
         gdf.total_bounds[1] - 1, # miny
         gdf.total_bounds[3] + 1  # maxy
@@ -94,10 +124,34 @@ def set_ax_ylim_to_gdf_total_bounds(
 def set_ax_xticks_to_empty_list(
     ax:  plt.Axes, # type: ignore
 ) -> None:
+    """
+    Clears `ax`'s x-axis ticks.
+
+    Parameters
+    ----------
+    ax : :class:`matplotlib.axes.Axes`
+        The axes to clear ticks on
+
+    Returns
+    -------
+    None
+    """
     ax.set_xticks([])
 
 
 def set_ax_yticks_to_empty_list(
     ax:  plt.Axes, # type: ignore
 ) -> None:
+    """
+    Clears `ax`'s y-axis ticks.
+
+    Parameters
+    ----------
+    ax : :class:`matplotlib.axes.Axes`
+        The axes to clear ticks on
+
+    Returns
+    -------
+    None
+    """
     ax.set_yticks([])
