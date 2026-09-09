@@ -16,7 +16,7 @@ def merge_dfs_on_esacci_lakes_id(
     right_df: pd.DataFrame
 ) -> pd.DataFrame:
     """
-    Merges a `left_df` with `right_df` on `esacci_lakes_id`.
+    Merges `left_df` with `right_df` on the `esacci_lakes_id` index.
 
     Parameters
     ----------
@@ -32,14 +32,14 @@ def merge_dfs_on_esacci_lakes_id(
 
     Notes
     -----
-    Internal `pandas.merge` call assumes "esacci_lakes_id" is an
-    existing column in both `left_df` and `right_df`. Merge is validated
-    as one-to-one.
+    Internal `pandas.merge` call assumes "esacci_lakes_id" is the index
+    of both `left_df` and `right_df`. Merge is validated as one-to-one.
     """
     return pd.merge(
         left=left_df,
         right=right_df,
-        on="esacci_lakes_id",
+        left_index=True,
+        right_index=True,
         validate="one_to_one"
     )
 

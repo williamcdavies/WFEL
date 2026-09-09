@@ -8,6 +8,8 @@ Written by William Chuter-Davies
 import argparse
 import sys
 
+from typing import Callable
+
 # Related Third-party Imports
 import matplotlib.pyplot as plt
 import numpy             as np
@@ -31,12 +33,12 @@ from lib.math.utils            import (
 )
 from lib.math.vars             import SPACES
 from lib.plot.utils            import (
+    set_fig_suptitle,
     set_ax_xscale_to_lin,
-    set_ax_xscale_to_log,
-    set_ax_title
+    set_ax_xscale_to_log
 )
 
-PROG   = "view_distribution_of_esacci_lakes_hylak_field.py"
+PROG = "view_distribution_of_esacci_lakes_hylak_field.py"
 
 
 def add_argument_space(
@@ -131,16 +133,22 @@ def arguments_are_valid(
     `True` if all arguments are successfully validated. `False`
     otherwise.
     """
-    if not argument_hylak_field_is_in_hylak_fields(args.hylak_field, loud=True): 
+    if not argument_hylak_field_is_in_hylak_fields(
+        args.hylak_field,
+        loud=True
+    ):
         return False
 
-    if not argument_esacci_lakes_hylak_fields_csv_path_exists(args.esacci_lakes_hylak_fields_csv_path, loud=True):
+    if not argument_esacci_lakes_hylak_fields_csv_path_exists(
+        args.esacci_lakes_hylak_fields_csv_path,
+        loud=True
+    ):
         return False
 
     return True
 
 
-def plot_hylak_field_ser_lin_histogram(
+def plot_ser_histogram_lin(
     ax:  plt.Axes, # type: ignore
     ser: pd.Series
 ) -> None:
@@ -170,7 +178,7 @@ def plot_hylak_field_ser_lin_histogram(
     )
 
 
-def plot_hylak_field_ser_log_histogram(
+def plot_ser_histogram_log(
     ax:  plt.Axes, # type: ignore
     ser: pd.Series
 ) -> None:
@@ -204,7 +212,7 @@ def plot_hylak_field_ser_log_histogram(
     )
 
 
-def plot_hylak_field_ser_boxplot(
+def plot_ser_boxplot(
     ax:  plt.Axes, # type: ignore
     ser: pd.Series
 ) -> None:
@@ -229,24 +237,24 @@ def plot_hylak_field_ser_boxplot(
     )
 
 
-def plot_quartile_lines(
+def plot_quantile_lines(
     ax:        plt.Axes, # type: ignore
-    quartiles: list[float],
+    quantiles: list[float],
     labels:    list[str]
 ) -> None:
     """
-    Plots vertical dotted lines on `ax` at each of `quartiles`.
+    Plots vertical dotted lines on `ax` at each of `quantiles`.
 
     Parameters
     ----------
     ax : :class:`matplotlib.axes.Axes`
         The axes to plot onto
 
-    quartiles : list[float]
+    quantiles : list[float]
         The values to draw lines at
 
     labels : list[str]
-        The label for each of `quartiles`
+        The label for each of `quantiles`
 
     Returns
     -------
@@ -254,13 +262,144 @@ def plot_quartile_lines(
     """
     cmap = plt.get_cmap("tab10")
 
-    for i, (quartile, label) in enumerate(zip(quartiles, labels)):
+    for i, (quantile, label) in enumerate(zip(quantiles, labels)):
         ax.axvline(
-            x=quartile,
+            x=quantile,
             color=cmap(i),
             linestyle=":",
-            label=f"""{label}: {quartile:.3e}"""
+            label=f"""{label}: {quantile:.3e}"""
         )
+
+
+def plot_on_hist_ax(
+    hist_ax:               plt.Axes, # type: ignore
+    hylak_field_ser:       pd.Series,
+    hylak_field_quantiles: list[float],
+    plot_ser_histogram:    Callable[[plt.Axes, pd.Series], None] # type: ignore
+) -> None:
+    """
+    Plots a histogram (via `plot_ser_histogram`) and quantile lines of
+    `hylak_field_ser` onto `hist_ax`.
+
+    Parameters
+    ----------
+    hist_ax : :class:`matplotlib.axes.Axes`
+        The axes to plot onto
+
+    hylak_field_ser : :class:`pandas.Series`
+        The :class:`pandas.Series`
+
+    hylak_field_quantiles : list[float]
+        The quantile values to draw lines at
+
+    plot_ser_histogram : Callable[[:class:`matplotlib.axes.Axes`, :class:`pandas.Series`], None]
+        The histogram-plotting function to use, e.g.
+        `plot_ser_histogram_log` or `plot_ser_histogram_lin`
+
+    Returns
+    -------
+    None
+    """
+    plot_ser_histogram(
+        hist_ax,
+        hylak_field_ser
+    )
+    plot_quantile_lines(
+        hist_ax,
+        hylak_field_quantiles,
+        [
+            "Q1",
+            "Q2",
+            "Q3"
+        ]
+    )
+
+
+def plot_on_box_ax(
+    box_ax:                plt.Axes, # type: ignore
+    hylak_field_ser:       pd.Series,
+    hylak_field_quantiles: list[float]
+) -> None:
+    """
+    Plots a box and whisker plot and quantile lines of
+    `hylak_field_ser` onto `box_ax`.
+
+    Parameters
+    ----------
+    box_ax : :class:`matplotlib.axes.Axes`
+        The axes to plot onto
+
+    hylak_field_ser : :class:`pandas.Series`
+        The :class:`pandas.Series`
+
+    hylak_field_quantiles : list[float]
+        The quantile values to draw lines at
+
+    Returns
+    -------
+    None
+    """
+    plot_ser_boxplot(
+        box_ax,
+        hylak_field_ser
+    )
+    plot_quantile_lines(
+        box_ax,
+        hylak_field_quantiles,
+        [
+            "Q1",
+            "Q2",
+            "Q3"
+        ]
+    )
+
+
+def set_hist_ax_properties(
+    hist_ax:       plt.Axes, # type: ignore
+    set_ax_xscale: Callable[[plt.Axes], None] # type: ignore
+) -> None:
+    """
+    Sets `hist_ax`'s properties, including its x-axis scale (via
+    `set_ax_xscale`).
+
+    Parameters
+    ----------
+    hist_ax : :class:`matplotlib.axes.Axes`
+        The axes to set properties on
+
+    set_ax_xscale : Callable[[:class:`matplotlib.axes.Axes`], None]
+        The scale-setting function to use, e.g. `set_ax_xscale_to_log`
+        or `set_ax_xscale_to_lin`
+
+    Returns
+    -------
+    None
+    """
+    set_ax_xscale(hist_ax)
+
+
+def set_box_ax_properties(
+    box_ax:        plt.Axes, # type: ignore
+    set_ax_xscale: Callable[[plt.Axes], None] # type: ignore
+) -> None:
+    """
+    Sets `box_ax`'s properties, including its x-axis scale (via
+    `set_ax_xscale`).
+
+    Parameters
+    ----------
+    box_ax : :class:`matplotlib.axes.Axes`
+        The axes to set properties on
+
+    set_ax_xscale : Callable[[:class:`matplotlib.axes.Axes`], None]
+        The scale-setting function to use, e.g. `set_ax_xscale_to_log`
+        or `set_ax_xscale_to_lin`
+
+    Returns
+    -------
+    None
+    """
+    set_ax_xscale(box_ax)
 
 
 def main(
@@ -291,7 +430,7 @@ def main(
         ]
     )
 
-    _, (hist_ax, box_ax) = plt.subplots(
+    fig, (hist_ax, box_ax) = plt.subplots(
         nrows=2,
         ncols=1,
         sharex=True,
@@ -299,56 +438,40 @@ def main(
     )
 
     if args.space == "log":
-        plot_hylak_field_ser_log_histogram(
-            hist_ax,
-            hylak_field_ser
-        )
-
-        set_ax_xscale_to_log(hist_ax)
-        set_ax_xscale_to_log(box_ax)
-        
-        set_ax_title(
-            hist_ax, 
-            f"""Log Distribution of {args.hylak_field}"""
-        )
+        plot_hylak_field_histogram = plot_ser_histogram_log
+        set_ax_xscale              = set_ax_xscale_to_log
+        title                      = f"""Log Distribution of {args.hylak_field}"""
     elif args.space == "lin":
-        plot_hylak_field_ser_lin_histogram(
-            hist_ax,
-            hylak_field_ser
-        )
-
-        set_ax_xscale_to_lin(hist_ax)
-        set_ax_xscale_to_lin(box_ax)
-
-        set_ax_title(
-            hist_ax, 
-            f"""Lin Distribution of {args.hylak_field}"""
-        )
+        plot_hylak_field_histogram = plot_ser_histogram_lin
+        set_ax_xscale              = set_ax_xscale_to_lin
+        title                      = f"""Lin Distribution of {args.hylak_field}"""
     else:
         return RETURN_FAILURE
 
-    plot_hylak_field_ser_boxplot(
-        box_ax, 
-        hylak_field_ser
+    plot_on_hist_ax(
+        hist_ax,
+        hylak_field_ser,
+        hylak_field_quantiles,
+        plot_hylak_field_histogram
+    )
+    set_hist_ax_properties(
+        hist_ax,
+        set_ax_xscale
     )
 
-    plot_quartile_lines(
-        hist_ax, 
-        hylak_field_quantiles, 
-        [
-            "Q1", 
-            "Q2", 
-            "Q3"
-        ]
+    plot_on_box_ax(
+        box_ax,
+        hylak_field_ser,
+        hylak_field_quantiles
     )
-    plot_quartile_lines(
-        box_ax, 
-        hylak_field_quantiles, 
-        [
-            "Q1", 
-            "Q2", 
-            "Q3"
-        ]
+    set_box_ax_properties(
+        box_ax,
+        set_ax_xscale
+    )
+
+    set_fig_suptitle(
+        fig,
+        title
     )
 
     hist_ax.legend()
