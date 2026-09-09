@@ -13,40 +13,26 @@ import geopandas as gpd
 from matplotlib import pyplot as plt
 
 
-def set_ax_xscale_to_lin(
-    ax: plt.Axes # type: ignore
+def set_fig_suptitle(
+    fig:   plt.Figure, # type: ignore
+    title: str
 ) -> None:
     """
-    Sets `ax`'s x-axis to a lin scale.
+    Sets `fig`'s suptitle to `title`.
 
     Parameters
     ----------
-    ax : :class:`matplotlib.axes.Axes`
-        The axes to set the scale on
+    fig : :class:`matplotlib.figure.Figure`
+        The figure to set the suptitle on
+
+    title : :class:`str`
+        The title
 
     Returns
     -------
     None
     """
-    ax.set_xscale("lin")
-
-
-def set_ax_xscale_to_log(
-    ax: plt.Axes # type: ignore
-) -> None:
-    """
-    Sets `ax`'s x-axis to a log scale.
-
-    Parameters
-    ----------
-    ax : :class:`matplotlib.axes.Axes`
-        The axes to set the scale on
-
-    Returns
-    -------
-    None
-    """
-    ax.set_xscale("log")
+    fig.suptitle(title)
 
 
 def set_ax_title(
@@ -119,6 +105,42 @@ def set_ax_ylim_to_gdf_total_bounds(
         gdf.total_bounds[1] - 1, # miny
         gdf.total_bounds[3] + 1  # maxy
     )
+
+
+def set_ax_xscale_to_lin(
+    ax: plt.Axes # type: ignore
+) -> None:
+    """
+    Sets `ax`'s x-axis to a lin scale.
+
+    Parameters
+    ----------
+    ax : :class:`matplotlib.axes.Axes`
+        The axes to set the scale on
+
+    Returns
+    -------
+    None
+    """
+    ax.set_xscale("lin")
+
+
+def set_ax_xscale_to_log(
+    ax: plt.Axes # type: ignore
+) -> None:
+    """
+    Sets `ax`'s x-axis to a log scale.
+
+    Parameters
+    ----------
+    ax : :class:`matplotlib.axes.Axes`
+        The axes to set the scale on
+
+    Returns
+    -------
+    None
+    """
+    ax.set_xscale("log")
 
 
 def set_ax_xticks_to_empty_list(
