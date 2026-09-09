@@ -122,7 +122,10 @@ def arguments_are_valid(
     `True` if all arguments are successfully validated. `False`
     otherwise.
     """
-    if not argument_stusps_is_subset_of_two_letter_state_and_possession_abbreviations(args.stusps, loud=True): 
+    if not argument_stusps_is_subset_of_two_letter_state_and_possession_abbreviations(
+        args.stusps,
+        loud=True
+    ):
         return False
 
     return True
@@ -296,6 +299,80 @@ def plot_target_lakes_gdf(
     )
 
 
+def plot_on_ax(
+    ax:                plt.Axes, # type: ignore
+    states_gdf:        gpd.GeoDataFrame,
+    target_states_gdf: gpd.GeoDataFrame,
+    target_lakes_gdf:  gpd.GeoDataFrame
+) -> None:
+    """
+    Plots `states_gdf`, `target_states_gdf`, and `target_lakes_gdf`
+    onto `ax`.
+
+    Parameters
+    ----------
+    ax : :class:`matplotlib.axes.Axes`
+        The axes to plot onto
+
+    states_gdf : :class:`geopandas.GeoDataFrame`
+        All states
+
+    target_states_gdf : :class:`geopandas.GeoDataFrame`
+        The target states
+
+    target_lakes_gdf : :class:`geopandas.GeoDataFrame`
+        The target lakes
+
+    Returns
+    -------
+    None
+    """
+    plot_states_gdf(
+        ax,
+        states_gdf
+    )
+    plot_target_states_gdf(
+        ax,
+        target_states_gdf
+    )
+    plot_target_lakes_gdf(
+        ax,
+        target_lakes_gdf
+    )
+
+
+def set_ax_properties(
+    ax:                plt.Axes, # type: ignore
+    target_states_gdf: gpd.GeoDataFrame
+) -> None:
+    """
+    Sets `ax`'s properties, including its x/y limits (from
+    `target_states_gdf`'s total bounds) and clearing its x/y ticks.
+
+    Parameters
+    ----------
+    ax : :class:`matplotlib.axes.Axes`
+        The axes to set properties on
+
+    target_states_gdf : :class:`geopandas.GeoDataFrame`
+        The target states
+
+    Returns
+    -------
+    None
+    """
+    set_ax_xlim_to_gdf_total_bounds(
+        ax,
+        target_states_gdf
+    )
+    set_ax_ylim_to_gdf_total_bounds(
+        ax,
+        target_states_gdf
+    )
+    set_ax_xticks_to_empty_list(ax)
+    set_ax_yticks_to_empty_list(ax)
+
+
 def main(
 ) -> int:
     """
@@ -329,29 +406,16 @@ def main(
 
     _, ax = plt.subplots()
 
-    plot_states_gdf(
-        ax, 
-        states_gdf
-    )
-    plot_target_states_gdf(
-        ax, 
-        target_states_gdf
-    )
-    plot_target_lakes_gdf(
-        ax, 
+    plot_on_ax(
+        ax,
+        states_gdf,
+        target_states_gdf,
         target_lakes_gdf
     )
-
-    set_ax_xlim_to_gdf_total_bounds(
+    set_ax_properties(
         ax,
         target_states_gdf
     )
-    set_ax_ylim_to_gdf_total_bounds(
-        ax,
-        target_states_gdf
-    )
-    set_ax_xticks_to_empty_list(ax)
-    set_ax_yticks_to_empty_list(ax)
 
     plt.tight_layout()
     plt.show()
