@@ -109,7 +109,10 @@ def arguments_are_valid(
     `True` if all arguments are successfully validated. `False`
     otherwise.
     """
-    if not argument_shp_path_exists(args.shp_path, loud=True): 
+    if not argument_shp_path_exists(
+        args.shp_path,
+        loud=True
+    ):
         return False
 
     return True

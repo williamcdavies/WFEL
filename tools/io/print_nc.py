@@ -109,7 +109,10 @@ def arguments_are_valid(
     `True` if all arguments are successfully validated. `False`
     otherwise.
     """
-    if not argument_nc_path_exists(args.nc_path, loud=True): 
+    if not argument_nc_path_exists(
+        args.nc_path,
+        loud=True
+    ):
         return False
 
     return True
