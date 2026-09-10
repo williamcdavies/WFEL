@@ -13,50 +13,6 @@ import geopandas as gpd
 from matplotlib import pyplot as plt
 
 
-def set_fig_suptitle(
-    fig:   plt.Figure, # type: ignore
-    title: str
-) -> None:
-    """
-    Sets `fig`'s suptitle to `title`.
-
-    Parameters
-    ----------
-    fig : :class:`matplotlib.figure.Figure`
-        The figure to set the suptitle on
-
-    title : :class:`str`
-        The title
-
-    Returns
-    -------
-    None
-    """
-    fig.suptitle(title)
-
-
-def set_ax_title(
-    ax:    plt.Axes, # type: ignore
-    title: str
-) -> None:
-    """
-    Sets `ax`'s title to `title`.
-
-    Parameters
-    ----------
-    ax : :class:`matplotlib.axes.Axes`
-        The axes to set the title on
-
-    title : :class:`str`
-        The title
-
-    Returns
-    -------
-    None
-    """
-    ax.set_title(title)
-
-
 def set_ax_xlim_to_gdf_total_bounds(
     ax:  plt.Axes, # type: ignore
     gdf: gpd.GeoDataFrame
@@ -177,3 +133,48 @@ def set_ax_yticks_to_empty_list(
     None
     """
     ax.set_yticks([])
+
+def force_ax_xtick_visibility(
+    ax: plt.Axes, # type: ignore
+    on: bool = True
+) -> None:
+    """
+    Forces `ax`'s x-axis tick labels to be shown or hidden.
+
+    Parameters
+    ----------
+    ax : :class:`matplotlib.axes.Axes`
+        The axes to set x-tick label visibility on
+
+    on : bool
+        If `True`, shows `ax`'s x-tick labels. If `False`, hides them.
+        default=True
+
+    Returns
+    -------
+    None
+    """
+    ax.tick_params(labelbottom=on)
+
+
+def force_ax_ytick_visibility(
+    ax: plt.Axes, # type: ignore
+    on: bool = True
+) -> None:
+    """
+    Forces `ax`'s y-axis tick labels to be shown or hidden.
+
+    Parameters
+    ----------
+    ax : :class:`matplotlib.axes.Axes`
+        The axes to set y-tick label visibility on
+
+    on : bool
+        If `True`, shows `ax`'s y-tick labels. If `False`, hides them.
+        default=True
+
+    Returns
+    -------
+    None
+    """
+    ax.tick_params(labelleft=on)
