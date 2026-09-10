@@ -32,3 +32,35 @@ class ESACCILakesVariable:
     var_id:    str
     long_name: str
     units:     str
+
+
+@dataclass
+class HylakField:
+    """
+    Dataclass object for representing a HydroLAKES field.
+
+    Parameters
+    ----------
+    field_id : :class:`str`
+        Field name, or key, as it appears in the HydroLAKES v1.0
+        technical documentation
+
+    long_name : :class:`str`
+        Field long name
+
+    units : :class:`str`
+        Field units
+
+    lower_bound : float | None
+        Lower bound used to filter lakes by this field. `None` if no
+        lower bound applies.
+
+    upper_bound : float | None
+        Upper bound used to filter lakes by this field. `None` if no
+        upper bound applies.
+    """
+    field_id:    str
+    long_name:   str
+    units:       str
+    lower_bound: float | None
+    upper_bound: float | None
