@@ -1,5 +1,5 @@
 r"""
-view_distribution_of_esacci_lakes_hylak_field.py
+view_distribution_of_hylak_field.py
 
 Written by William Chuter-Davies
 """
@@ -38,7 +38,7 @@ from lib.plot.utils            import (
     set_ax_xscale_to_log
 )
 
-PROG = "view_distribution_of_esacci_lakes_hylak_field.py"
+PROG = "view_distribution_of_hylak_field.py"
 
 
 def add_argument_space(
