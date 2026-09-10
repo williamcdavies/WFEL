@@ -1,5 +1,5 @@
 r"""
-view_lakes_within_states.py
+view_map_of_lakes_within_us_states.py
 
 Written by William Chuter-Davies
 """
@@ -28,7 +28,7 @@ from lib.plot.utils import (
     set_ax_yticks_to_empty_list
 )
 
-PROG = "view_lakes_within_states.py"
+PROG = "view_map_of_lakes_within_us_states.py"
 
 
 def add_argument_stusps(
@@ -102,7 +102,7 @@ def build_parser(
     parser = argparse.ArgumentParser(
         prog=PROG,
         usage="%(prog)s [options]",
-        description="""Produces a map visualisation of all lakes within a set of states."""
+        description="""Produces a map visualisation of all HydroLAKES lakes within a set of U.S. states."""
     )
 
     # Optional arguments
