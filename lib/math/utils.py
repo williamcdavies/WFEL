@@ -55,6 +55,50 @@ def drop_column_from_df(
     return df.drop(columns=[column])
 
 
+def filter_df_by_column_bounds(
+    df:     pd.DataFrame,
+    column: str,
+    *,
+    lower:  float | None = None,
+    upper:  float | None = None
+) -> pd.DataFrame:
+    """
+    Filters `df` to rows whose `column` is within [`lower`, `upper`].
+
+    Parameters
+    ----------
+    df : :class:`pandas.DataFrame`
+        The :class:`pandas.DataFrame`
+
+    column : :class:`str`
+        The column to filter on
+
+    lower : float | None
+        Inclusive lower bound. If `None`, no lower bound is applied.
+        default=None
+
+    upper : float | None
+        Inclusive upper bound. If `None`, no upper bound is applied.
+        default=None
+
+    Returns
+    -------
+    A :class:`pandas.DataFrame`.
+
+    Notes
+    -----
+    Internal indexing call assumes `column` is an existing column in
+    `df`.
+    """
+    if lower is not None:
+        df = df[df[column] >= lower]
+
+    if upper is not None:
+        df = df[df[column] <= upper]
+
+    return df
+
+
 def get_quantiles_from_ser(
     ser:       pd.Series,
     quantiles: list[float]
