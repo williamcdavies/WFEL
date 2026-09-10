@@ -109,7 +109,7 @@ def build_parser(
     parser = argparse.ArgumentParser(
         prog=PROG,
         usage="%(prog)s [options]",
-        description=""""""
+        description="""Produces a distribution visualisation of a HydroLAKES field of all lakes in spatial.esacci_lakes (Same lakes as provided by ESA Lakes Climate Change Initiative (esacci_lakes): Lake products, Version 3.0)"""
     )
 
     # Positional arguments
