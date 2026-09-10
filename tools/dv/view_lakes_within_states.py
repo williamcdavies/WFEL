@@ -412,6 +412,7 @@ def main(
         target_states_gdf,
         target_lakes_gdf
     )
+    
     set_ax_properties(
         ax,
         target_states_gdf

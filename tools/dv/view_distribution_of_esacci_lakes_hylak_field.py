@@ -23,6 +23,7 @@ from lib.esacci_lakes.utils.io import (
     argument_esacci_lakes_hylak_fields_csv_path_exists,
     read_esacci_lakes_hylak_fields_csv
 )
+from lib.esacci_lakes.vars     import HYLAK_FIELDS
 from lib.io.vars               import (
     RETURN_SUCCESS,
     RETURN_FAILURE
@@ -33,7 +34,6 @@ from lib.math.utils            import (
 )
 from lib.math.vars             import SPACES
 from lib.plot.utils            import (
-    set_fig_suptitle,
     set_ax_xscale_to_lin,
     set_ax_xscale_to_log
 )
@@ -440,11 +440,11 @@ def main(
     if args.space == "log":
         plot_hylak_field_histogram = plot_ser_histogram_log
         set_ax_xscale              = set_ax_xscale_to_log
-        title                      = f"""Log Distribution of {args.hylak_field}"""
+        title                      = f"""Log Distribution of {HYLAK_FIELDS[args.hylak_field].long_name}"""
     elif args.space == "lin":
         plot_hylak_field_histogram = plot_ser_histogram_lin
         set_ax_xscale              = set_ax_xscale_to_lin
-        title                      = f"""Lin Distribution of {args.hylak_field}"""
+        title                      = f"""Lin Distribution of {HYLAK_FIELDS[args.hylak_field].long_name}"""
     else:
         return RETURN_FAILURE
 
@@ -454,25 +454,22 @@ def main(
         hylak_field_quantiles,
         plot_hylak_field_histogram
     )
-    set_hist_ax_properties(
-        hist_ax,
-        set_ax_xscale
-    )
-
     plot_on_box_ax(
         box_ax,
         hylak_field_ser,
         hylak_field_quantiles
+    )
+
+    set_hist_ax_properties(
+        hist_ax,
+        set_ax_xscale
     )
     set_box_ax_properties(
         box_ax,
         set_ax_xscale
     )
 
-    set_fig_suptitle(
-        fig,
-        title
-    )
+    fig.suptitle(title)
 
     hist_ax.legend()
     plt.tight_layout()
