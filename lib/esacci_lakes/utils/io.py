@@ -223,7 +223,7 @@ def add_argument_hylak_field(
     parser.add_argument(
         "hylak_field",
         type=str,
-        help=f"""one of {HYLAK_FIELDS}"""
+        help=f"""one of {HYLAK_FIELDS.keys()}"""
     )
 
 
@@ -251,7 +251,7 @@ def argument_hylak_field_is_in_hylak_fields(
         return True
 
     if loud:
-        print(f"""error: argument hylak_field: not in {HYLAK_FIELDS}: {hylak_field}""")
+        print(f"""error: argument hylak_field: not in {HYLAK_FIELDS.keys()}: {hylak_field}""")
 
     return False
 
